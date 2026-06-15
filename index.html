@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1a1424">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="お試しデモ">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>ねこの手スタジオ｜お試しデモ</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif; background: #1a1424; color: #ece4f4; min-height: 100vh; min-height: 100dvh; }
+
+  .header { background: #1a1424; color: white; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #9333ea; position: sticky; top: 0; z-index: 100; }
+  .header-title { font-size: 1rem; font-weight: 700; letter-spacing: 0.04em; color: #c084fc; }
+  .header-sub { font-size: 0.62rem; opacity: 0.55; margin-top: 1px; }
+  .free-badge { background: #fcd34d; color: #1a1424; font-size: 0.64rem; font-weight: 700; padding: 3px 9px; border-radius: 20px; }
+
+  .main { max-width: 680px; margin: 0 auto; padding: 18px 12px 80px; }
+
+  .intro { text-align: center; padding: 8px 8px 4px; }
+  .intro h2 { font-size: 1.5rem; color: #c084fc; margin-bottom: 6px; }
+  .intro p { color: #9a8ab8; font-size: 0.84rem; line-height: 1.6; margin-bottom: 4px; }
+
+  /* ===== STAMP CARD ===== */
+  .stampcard { background: #251c38; border: 1px solid #3a2e54; border-radius: 8px; padding: 14px 14px 16px; margin: 16px auto; max-width: 380px; }
+  .stampcard .sc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .stampcard .sc-title { font-size: 0.86rem; font-weight: 700; color: #fcd34d; }
+  .stampcard .sc-count { font-size: 0.74rem; color: #9a8ab8; }
+  .stamp-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px 8px; row-gap: 22px; padding-bottom: 6px; }
+  .stamp { aspect-ratio: 1; border-radius: 50%; border: 2px dashed #4a3a6a; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: #1a1424; position: relative; }
+  .stamp.filled { border: 2px solid #c084fc; background: #2e2348; box-shadow: 0 0 8px rgba(192,132,252,0.4); }
+  .stamp .label { position: absolute; bottom: -15px; font-size: 0.5rem; color: #6a5a88; white-space: nowrap; }
+  .sc-complete { text-align: center; font-size: 0.76rem; color: #fcd34d; margin-top: 16px; font-weight: 700; }
+  .sc-reset { display: block; margin: 8px auto 0; background: none; border: none; color: #4a3a6a; font-size: 0.66rem; text-decoration: underline; cursor: pointer; }
+
+  /* ===== SUBJECT GRID ===== */
+  .grid-title { font-size: 0.78rem; color: #9a8ab8; text-align: center; margin: 22px 0 12px; letter-spacing: 0.05em; }
+  .subjects { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 480px; margin: 0 auto; }
+  .subj-card { background: #251c38; border: 1.5px solid #3a2e54; border-radius: 8px; padding: 14px 12px; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: border-color 0.1s, transform 0.05s; position: relative; }
+  .subj-card:active { transform: scale(0.98); }
+  .subj-card .se { font-size: 1.6rem; display: block; margin-bottom: 6px; }
+  .subj-card .sl { font-size: 0.92rem; font-weight: 700; color: #ece4f4; }
+  .subj-card .sn { font-size: 0.66rem; color: #9a8ab8; margin-top: 2px; }
+  .subj-card .done-tag { position: absolute; top: 8px; right: 8px; font-size: 0.62rem; background: #c084fc; color: #1a1424; font-weight: 700; padding: 1px 6px; border-radius: 10px; }
+
+  /* ===== QUIZ ===== */
+  .quiz-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .quiz-subj { font-size: 0.84rem; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+  .quiz-prog { font-size: 0.74rem; color: #9a8ab8; }
+  .back-btn { background: none; border: 1px solid #3a2e54; color: #9a8ab8; font-size: 0.72rem; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+  .reading-progress { height: 4px; background: #251c38; border-radius: 4px; margin-bottom: 16px; overflow: hidden; }
+  .reading-progress-fill { height: 100%; transition: width 0.4s; }
+
+  .question-card { background: #251c38; border: 1px solid #3a2e54; padding: 20px 18px; margin-bottom: 14px; border-radius: 6px; }
+  .question-text { font-size: 0.95rem; line-height: 1.7; color: #ece4f4; font-weight: 500; }
+  .option-btn { width: 100%; text-align: left; padding: 12px 14px; border: 1.5px solid #3a2e54; background: #251c38; cursor: pointer; font-size: 0.86rem; color: #d4c8e6; display: flex; gap: 10px; align-items: flex-start; -webkit-tap-highlight-color: transparent; transition: background 0.1s; margin-bottom: 8px; border-radius: 4px; }
+  .option-btn:active:not(:disabled) { background: #2e2348; }
+  .option-btn .opt-label { font-weight: 700; color: #c084fc; min-width: 26px; flex-shrink: 0; }
+  .option-btn.correct { background: #14532d; border-color: #22c55e; color: #86efac; }
+  .option-btn.wrong   { background: #450a0a; border-color: #ef4444; color: #fca5a5; }
+  .option-btn.reveal  { background: #14532d; border-color: #22c55e; opacity: 0.7; }
+  .option-btn:disabled { cursor: default; }
+  .explanation { font-size: 0.78rem; margin-top: 8px; padding: 11px 13px; border-radius: 4px; line-height: 1.55; }
+  .explanation.ok { color: #86efac; background: #052e16; border-left: 3px solid #22c55e; }
+  .explanation.ng { color: #fca5a5; background: #1c0505; border-left: 3px solid #ef4444; }
+  .actions { display: flex; justify-content: flex-end; margin-top: 12px; }
+  .btn-next { color: #1a1424; border: none; padding: 11px 26px; font-size: 0.9rem; font-weight: 700; cursor: pointer; border-radius: 4px; -webkit-tap-highlight-color: transparent; }
+  .btn-next:disabled { background: #3a2e54 !important; color: #6a5a88; cursor: default; }
+
+  /* ===== RESULT / CTA ===== */
+  .result { text-align: center; padding: 30px 16px; }
+  .result .emoji-big { font-size: 3rem; margin-bottom: 8px; }
+  .result h2 { font-size: 1.3rem; color: #c084fc; margin-bottom: 6px; }
+  .result .score { font-size: 2.4rem; font-weight: 700; color: #fcd34d; margin: 10px 0; }
+  .result .got-stamp { font-size: 0.84rem; color: #86efac; margin-bottom: 6px; }
+  .cta-box { background: #251c38; border: 1px solid #3a2e54; border-radius: 8px; padding: 20px 18px; margin: 18px auto; max-width: 380px; }
+  .cta-box .cta-lead { font-size: 0.86rem; color: #d4c8e6; line-height: 1.6; margin-bottom: 14px; }
+  .cta-box .cta-lead b { color: #fcd34d; }
+  .btn-buy { display: block; width: 100%; color: #1a1424; border: none; padding: 14px; font-size: 0.95rem; font-weight: 700; cursor: pointer; border-radius: 6px; text-decoration: none; text-align: center; -webkit-tap-highlight-color: transparent; }
+  .result-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+  .btn-sub { background: #251c38; border: 1.5px solid #3a2e54; padding: 11px 22px; font-size: 0.86rem; font-weight: 700; cursor: pointer; color: #c8bce0; border-radius: 4px; }
+
+  .footer-note { text-align: center; font-size: 0.7rem; color: #5a4a78; margin-top: 28px; line-height: 1.7; }
+  .footer-note a { color: #9a8ab8; }
+
+  .spark-float { position: fixed; font-size: 1.6rem; pointer-events: none; z-index: 9999; animation: sparkFloat 0.9s ease-out forwards; }
+  @keyframes sparkFloat { 0%{transform:translateY(0) scale(1);opacity:1} 100%{transform:translateY(-80px) scale(1.5);opacity:0} }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-title">ねこの手スタジオ｜お試しデモ</div>
+    <div class="header-sub">資格・お稽古アプリ 無料体験版</div>
+  </div>
+  <span class="free-badge">FREE</span>
+</div>
+
+<div class="main">
+
+  <!-- ホーム（教科選択＋スタンプカード） -->
+  <div id="homeScreen">
+    <div class="intro">
+      <h2>🐾 まずはお試し！</h2>
+      <p>気になる教科を選んで<b style="color:#c084fc">5問</b>チャレンジ。</p>
+      <p>全教科クリアでスタンプを集めよう！</p>
+    </div>
+
+    <div class="stampcard">
+      <div class="sc-head">
+        <div class="sc-title">🐾 お試しスタンプカード</div>
+        <div class="sc-count"><span id="stampCount">0</span> / 9</div>
+      </div>
+      <div class="stamp-grid" id="stampGrid"></div>
+      <div class="sc-complete" id="scComplete" style="display:none">🎉 全教科コンプリート！ありがとうございます🐾</div>
+      <button class="sc-reset" onclick="resetStamps()">スタンプをリセット</button>
+    </div>
+
+    <div class="grid-title">― 教科をえらぶ ―</div>
+    <div class="subjects" id="subjectGrid"></div>
+
+    <div class="footer-note">
+      これは無料のお試し版です（各教科5問）。<br>
+      製品版は全100問・解説つき・復習機能つき🐾<br>
+      <a href="https://note.com/tekona_nekonote" target="_blank" rel="noopener">ねこの手スタジオ（note）</a>
+    </div>
+  </div>
+
+  <!-- クイズ -->
+  <div id="quizScreen" style="display:none">
+    <div class="quiz-head">
+      <div class="quiz-subj" id="quizSubj"></div>
+      <button class="back-btn" onclick="goHome()">← もどる</button>
+    </div>
+    <div class="reading-progress"><div class="reading-progress-fill" id="progressFill"></div></div>
+    <div id="questionContainer"></div>
+    <div class="actions">
+      <button class="btn-next" id="btnNext" onclick="nextQuestion()" disabled>次へ →</button>
+    </div>
+  </div>
+
+  <!-- 結果＋CTA -->
+  <div id="resultScreen" style="display:none" class="result">
+    <div class="emoji-big" id="resultEmoji">🎉</div>
+    <h2>お試し完了！</h2>
+    <div class="score" id="resultScore">0 / 5</div>
+    <div class="got-stamp" id="gotStamp">🐾 スタンプを1つ獲得しました！</div>
+
+    <div class="cta-box">
+      <div class="cta-lead" id="ctaLead"></div>
+      <a class="btn-buy" id="btnBuy" href="#" target="_blank" rel="noopener">製品版を見る（note）→</a>
+    </div>
+
+    <div class="result-btns">
+      <button class="btn-sub" onclick="retrySubject()">もう一度</button>
+      <button class="btn-sub" onclick="goHome()">教科を選ぶ</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="demo-questions.js"></script>
+<script>
+const STAMP_KEY = 'demo_stamps';
+
+function getStamps() { try { return new Set(JSON.parse(localStorage.getItem(STAMP_KEY)||'[]')); } catch { return new Set(); } }
+function saveStamps(s) { localStorage.setItem(STAMP_KEY, JSON.stringify([...s])); }
+function addStamp(key) { const s=getStamps(); s.add(key); saveStamps(s); }
+function resetStamps() { if(!confirm('スタンプをリセットしますか？')) return; localStorage.removeItem(STAMP_KEY); renderStamps(); renderSubjects(); }
+
+function renderStamps() {
+  const stamps = getStamps();
+  const grid = document.getElementById('stampGrid');
+  grid.innerHTML = DEMO_ORDER.map(key => {
+    const d = DEMO[key];
+    const filled = stamps.has(key);
+    return `<div class="stamp ${filled?'filled':''}">${filled?'🐾':''}<span class="label">${d.emoji}</span></div>`;
+  }).join('');
+  document.getElementById('stampCount').textContent = stamps.size;
+  document.getElementById('scComplete').style.display = stamps.size >= DEMO_ORDER.length ? 'block' : 'none';
+}
+
+function renderSubjects() {
+  const stamps = getStamps();
+  const grid = document.getElementById('subjectGrid');
+  grid.innerHTML = DEMO_ORDER.map(key => {
+    const d = DEMO[key];
+    const done = stamps.has(key);
+    return `<div class="subj-card" style="border-top:3px solid ${d.color}" onclick="startSubject('${key}')">
+      ${done?'<span class="done-tag">✓ 体験済</span>':''}
+      <span class="se">${d.emoji}</span>
+      <span class="sl">${d.label}</span>
+      <span class="sn">お試し5問にチャレンジ</span>
+    </div>`;
+  }).join('');
+}
+
+// PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+}
+
+let curKey=null, curQ=[], idx=0, correctCount=0, answered=false;
+
+function startSubject(key) {
+  curKey = key; curQ = DEMO[key].questions; idx = 0; correctCount = 0;
+  document.getElementById('homeScreen').style.display='none';
+  document.getElementById('resultScreen').style.display='none';
+  document.getElementById('quizScreen').style.display='block';
+  const d = DEMO[key];
+  document.getElementById('quizSubj').innerHTML = `<span>${d.emoji}</span><span style="color:${d.color}">${d.label}</span>`;
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  const d = DEMO[curKey]; const q = curQ[idx];
+  document.getElementById('progressFill').style.width = (idx/curQ.length*100)+'%';
+  document.getElementById('progressFill').style.background = d.color;
+  document.getElementById('btnNext').disabled = true;
+  document.getElementById('btnNext').style.background = d.color;
+  const opts = q.options.map((opt,oi)=>`<button class="option-btn" id="opt_${oi}" onclick="selectAnswer(${oi})"><span class="opt-label">${['(1)','(2)','(3)','(4)'][oi]}</span><span>${opt}</span></button>`).join('');
+  document.getElementById('questionContainer').innerHTML =
+    `<div class="question-card"><div style="font-size:0.7rem;color:#9a8ab8;margin-bottom:8px;font-weight:600;">Q${idx+1} / ${curQ.length}（お試し）</div><div class="question-text">${q.q}</div></div><div>${opts}</div><div class="explanation" id="explanation" style="display:none"></div>`;
+  window.scrollTo(0,0);
+}
+
+function selectAnswer(oi) {
+  if(answered) return; answered = true;
+  const q = curQ[idx];
+  document.querySelectorAll('.option-btn').forEach(b=>b.disabled=true);
+  const fb = document.getElementById('explanation');
+  if(oi === q.answer) {
+    document.getElementById(`opt_${oi}`).classList.add('correct');
+    correctCount++;
+    fb.className='explanation ok'; fb.textContent='✓ 正解！ '+q.explanation;
+    const rect = document.getElementById(`opt_${oi}`).getBoundingClientRect();
+    spark(rect.left+rect.width/2, rect.top);
+  } else {
+    document.getElementById(`opt_${oi}`).classList.add('wrong');
+    document.getElementById(`opt_${q.answer}`).classList.add('reveal');
+    fb.className='explanation ng'; fb.textContent='✗ 不正解。'+q.explanation;
+  }
+  fb.style.display='block';
+  document.getElementById('btnNext').disabled=false;
+}
+
+function spark(x,y){ const el=document.createElement('div'); el.className='spark-float'; el.textContent='🐾'; el.style.left=x+'px'; el.style.top=y+'px'; document.body.appendChild(el); el.addEventListener('animationend',()=>el.remove()); }
+
+function nextQuestion() {
+  idx++;
+  if(idx >= curQ.length) { showResult(); return; }
+  showQuestion();
+}
+
+function showResult() {
+  const d = DEMO[curKey];
+  document.getElementById('quizScreen').style.display='none';
+  document.getElementById('resultScreen').style.display='block';
+  document.getElementById('resultScore').textContent = `${correctCount} / ${curQ.length}`;
+  document.getElementById('resultScore').style.color = d.color;
+  document.getElementById('resultEmoji').textContent = correctCount===curQ.length ? '🏆' : (correctCount>=3 ? '👏' : '💪');
+  addStamp(curKey);
+  document.getElementById('gotStamp').textContent = `${d.emoji} 「${d.label}」のスタンプを獲得！🐾`;
+  document.getElementById('ctaLead').innerHTML = `${d.emoji} <b>${d.label}</b> はいかがでしたか？<br>製品版は<b>全100問・くわしい解説・復習機能</b>つき。スキマ時間で合格力を鍛えられます！`;
+  const buy = document.getElementById('btnBuy');
+  buy.href = d.note; buy.style.background = d.color;
+  buy.textContent = `「${d.label}」製品版を見る（note）→`;
+  window.scrollTo(0,0);
+}
+
+function retrySubject() { startSubject(curKey); }
+
+function goHome() {
+  document.getElementById('quizScreen').style.display='none';
+  document.getElementById('resultScreen').style.display='none';
+  document.getElementById('homeScreen').style.display='block';
+  renderStamps(); renderSubjects();
+  window.scrollTo(0,0);
+}
+
+// 初期化
+renderStamps();
+renderSubjects();
+</script>
+</body>
+</html>
