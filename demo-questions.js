@@ -152,7 +152,7 @@ const DEMO = {
   },
   kaigo: {
     label:'介護福祉士', emoji:'🧑‍⚕️', color:'#2dd4bf',
-    note:PROFILE_URL, // ★公開した介護福祉士の販売記事URLに差し替えてください★
+    note:'https://note.com/tekona_nekonote/n/n89e9631619e8',
     questions:[
       { q:"「ノーマライゼーション」の考え方として最も適切なものはどれですか？",
         options:["障害者を施設に集めて保護する","障害の有無にかかわらず誰もが地域で普通に生活できる社会を目指す","高齢者を優先支援する","医療を中心に支援する"], answer:1,
@@ -173,7 +173,7 @@ const DEMO = {
   },
   caremane: {
     label:'ケアマネ', emoji:'📋', color:'#818cf8',
-    note:PROFILE_URL, // ★公開したケアマネの販売記事URLに差し替えてください★
+    note:'https://note.com/tekona_nekonote/n/n4ffee1e2c66c',
     questions:[
       { q:"介護保険制度における保険者はどれですか？",
         options:["国","都道府県","市町村及び特別区","国民健康保険団体連合会"], answer:2,
