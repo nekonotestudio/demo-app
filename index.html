@@ -284,6 +284,18 @@ function goHome() {
   window.scrollTo(0,0);
 }
 
+// 選択肢の並びをシャッフルして正解の位置を毎回ランダムにする
+DEMO_ORDER.forEach(key => {
+  DEMO[key].questions.forEach(q => {
+    const correctText = q.options[q.answer];
+    for (let i = q.options.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [q.options[i], q.options[j]] = [q.options[j], q.options[i]];
+    }
+    q.answer = q.options.indexOf(correctText);
+  });
+});
+
 // 初期化
 renderStamps();
 renderSubjects();
