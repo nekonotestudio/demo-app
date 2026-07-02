@@ -114,7 +114,7 @@
     <div class="stampcard">
       <div class="sc-head">
         <div class="sc-title">🐾 お試しスタンプカード</div>
-        <div class="sc-count"><span id="stampCount">0</span> / 9</div>
+        <div class="sc-count"><span id="stampCount">0</span> / <span id="stampTotal">10</span></div>
       </div>
       <div class="stamp-grid" id="stampGrid"></div>
       <div class="sc-complete" id="scComplete" style="display:none">🎉 全教科コンプリート！ありがとうございます🐾</div>
@@ -182,6 +182,7 @@ function renderStamps() {
     return `<div class="stamp ${filled?'filled':''}">${filled?'🐾':''}<span class="label">${d.emoji}</span></div>`;
   }).join('');
   document.getElementById('stampCount').textContent = stamps.size;
+  const st = document.getElementById('stampTotal'); if (st) st.textContent = DEMO_ORDER.length;
   document.getElementById('scComplete').style.display = stamps.size >= DEMO_ORDER.length ? 'block' : 'none';
 }
 
