@@ -192,6 +192,27 @@ const DEMO = {
         explanation:"保健師・社会福祉士・主任介護支援専門員の3職種を配置します。" }
     ]
   },
+  denki2: {
+    label:'第二種電気工事士', emoji:'⚡', color:'#facc15',
+    note:'https://note.com/tekona_nekonote/n/n99b05d308435',
+    questions:[
+      { q:"オームの法則を正しく表しているものはどれですか？",
+        options:["電圧 = 電流 ÷ 抵抗","電圧 = 電流 × 抵抗","電圧 = 抵抗 ÷ 電流","電流 = 電圧 × 抵抗"], answer:1,
+        explanation:"オームの法則は V＝I×R（電圧＝電流×抵抗）。変形して I＝V／R、R＝V／I とも表せます。" },
+      { q:"抵抗R1＝6Ωと R2＝3Ωを並列に接続したときの合成抵抗はいくらですか？",
+        options:["2Ω","4.5Ω","9Ω","18Ω"], answer:0,
+        explanation:"並列の合成抵抗は積÷和＝（6×3）／（6＋3）＝18／9＝2Ω です。" },
+      { q:"単相3線式配電（100V/200V）の中性線について正しいものはどれですか？",
+        options:["中性線には過電流遮断器を設けてはならない","中性線に過電流遮断器を設ける","中性線は接地しない","中性線は使わない"], answer:0,
+        explanation:"中性線が切れると異常電圧が生じる危険があるため、中性線には過電流遮断器を設けてはいけません。" },
+      { q:"D種接地工事の接地抵抗値は、原則としていくつ以下ですか？",
+        options:["100Ω以下","10Ω以下","500Ω以下","1Ω以下"], answer:0,
+        explanation:"D種接地工事の接地抵抗は原則100Ω以下です（0.5秒以内に動作する漏電遮断器を施設する場合は500Ω以下に緩和）。" },
+      { q:"第二種電気工事士ができる工事の範囲として正しいものはどれですか？",
+        options:["一般用電気工作物等の電気工事","すべての電気工作物の工事","高圧受電設備の工事","発電所の工事"], answer:0,
+        explanation:"第二種電気工事士は、一般用電気工作物等（原則600V以下で受電する住宅・小規模店舗など）の電気工事に従事できます。" }
+    ]
+  },
   kikenbutsu: {
     label:'危険物乙4', emoji:'🔥', color:'#f97316',
     note:'https://note.com/tekona_nekonote/n/ncafb82e55c2c',
@@ -216,4 +237,4 @@ const DEMO = {
 };
 
 // 教科の表示順
-const DEMO_ORDER = ['kikenbutsu','boki3','fp3','takken','itp','gkentei','toeic','toeicl','kaigo','caremane'];
+const DEMO_ORDER = ['kikenbutsu','denki2','boki3','fp3','takken','itp','gkentei','toeic','toeicl','kaigo','caremane'];
