@@ -150,6 +150,27 @@ const DEMO = {
         explanation:"be entitled to は「〜する権利・資格がある」。会員特典などの文脈で頻出です。" }
     ]
   },
+  toeicg: {
+    label:'TOEIC Part5/6 文法', emoji:'📘', color:'#60a5fa',
+    note:'https://note.com/tekona_nekonote/n/n230bb093b9f8',
+    questions:[
+      { q:"The new software will significantly ______ the efficiency of our workflow.",
+        options:["improve","improvement","improved","improvingly"], answer:0,
+        explanation:"助動詞 will ＋副詞 significantly の後は動詞の原形。improve（動詞）が正解。improvement は名詞なので不可です。" },
+      { q:"By the time the manager arrived, the meeting ______ already started.",
+        options:["has","had","have","having"], answer:1,
+        explanation:"By the time ＋過去形（arrived）で、それより前の動作は過去完了。had already started が正解です。" },
+      { q:"We look forward to ______ from you soon.",
+        options:["hear","hearing","heard","be heard"], answer:1,
+        explanation:"look forward to の to は前置詞なので後ろは動名詞。hearing が正解です。" },
+      { q:"The event was canceled ______ the bad weather.",
+        options:["because","because of","although","while"], answer:1,
+        explanation:"後ろが名詞句（the bad weather）なので前置詞。because of（〜のせいで）が正解。because は後ろに文が必要です。" },
+      { q:"The conference will ______ place in the main hall.",
+        options:["make","take","do","give"], answer:1,
+        explanation:"「行われる・開催される」は take place。決まった言い回し（コロケーション）です。" }
+    ]
+  },
   kaigo: {
     label:'介護福祉士', emoji:'🧑‍⚕️', color:'#2dd4bf',
     note:'https://note.com/tekona_nekonote/n/n89e9631619e8',
@@ -237,4 +258,4 @@ const DEMO = {
 };
 
 // 教科の表示順
-const DEMO_ORDER = ['kikenbutsu','denki2','boki3','fp3','takken','itp','gkentei','toeic','toeicl','kaigo','caremane'];
+const DEMO_ORDER = ['kikenbutsu','denki2','boki3','fp3','takken','itp','gkentei','toeic','toeicl','toeicg','kaigo','caremane'];
